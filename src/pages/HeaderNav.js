@@ -4,9 +4,9 @@ import PersonIcon from '../assets/img/personicon.svg'; // Importa ícone de usu�
 
 const HeaderNav = () => {
   const [userName, setUserName] = useState(''); // Estado para armazenar o nome do usuário
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Estado para controlar a visibilidade do popover
 
   useEffect(() => {
-    // Função para buscar o nome do usuário
     const fetchUserName = async () => {
       const userId = localStorage.getItem('userId'); // Obtém o ID do usuário do localStorage
       if (!userId) {
@@ -25,6 +25,13 @@ const HeaderNav = () => {
 
     fetchUserName(); // Chama a função para buscar o nome do usuário
   }, []); 
+
+  const handleLogout = () => {
+    // Lógica para logout
+    localStorage.removeItem('userId'); // Remove o ID do usuário do localStorage
+    // Redirecione ou execute qualquer outra ação após o logout
+    window.location.href = '/login'; // Exemplo: redireciona para a página de login
+  };
 
   return (
     <div>
@@ -53,36 +60,31 @@ const HeaderNav = () => {
             </a>
           </div>
           <div className="flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse bg-white text-black">
-            <button 
+            <button
               type="button"
-              className="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-400 bg-white transition-all hover:scale-105 hover:mx-2"
+              className="flex text-sm rounded-full md:me-0 focus:ring-2 focus:ring-white dark:focus:ring-gray-400 bg-white transition-all hover:scale-105 hover:mx-2"
               id="user-menu-button" 
-              aria-expanded="false" 
-              data-dropdown-toggle="user-dropdown"
-              data-dropdown-placement="bottom"
+              aria-expanded={isDropdownOpen} 
+              onClick={() => setIsDropdownOpen(prev => !prev)} // Alterna o estado do dropdown
             >
               <p className='z-10 bg-white text-black mx-1 mt-1 font-semibold'>{userName}</p>
               <span className="sr-only">Open user menu</span>
               <img src={PersonIcon} alt="Logo" className="w-8 h-8 bg-white border-none rounded-full outline-none" />
             </button>
-            <div
-              className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
-              id="user-dropdown"
-            >
-              <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">Comercial</span>
+            {isDropdownOpen && ( // Renderiza o dropdown se estiver aberto
+              <div className="z-50 text-base list-none bg-white divide-y ml-12 divide-gray-100 rounded-lg dark:bg-gray-700 dark:divide-gray-600">
+                <ul className="py-2" aria-labelledby="user-menu-button">
+                  <li>
+                    <button 
+                      onClick={handleLogout} // Lida com o logout
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-400"
+                    >
+                      Sair
+                    </button>
+                  </li>
+                </ul>
               </div>
-              <ul className="py-2" aria-labelledby="user-menu-button">
-                <li>
-                  <a 
-                    href="" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >
-                    Trocar de conta
-                  </a>
-                </li>
-              </ul>
-            </div>
+            )}
           </div>
           <div className="items-center justify-around hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
             <ul className="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">

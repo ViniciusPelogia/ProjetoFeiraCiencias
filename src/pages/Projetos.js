@@ -155,18 +155,17 @@ function Projetos({ listaProjetos }) { // Define o componente Projetos
               </button>
             </div>
           </form>
-
           <div className="pt-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {filteredProjetos.map((projeto) => ( // Mapeia os projetos filtrados para exibição
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              {filteredProjetos.map((projeto) => (
                 <div
                   key={projeto.id}
-                  className="flex items-center justify-between w-full p-4 bg-gray-100 border border-gray-200 rounded-lg shadow-md"
+                  className="flex z-50 justify-between items-start w-full p-4 bg-gray-100 border border-gray-200 rounded-lg shadow-md"
                 >
-                  <div>
-                    <h2 className="text-lg font-medium text-gray-800">
+                  <div className="flex-grow">
+                    <h2 className="text-lg font-medium text-gray-800 truncate">
                       <a
-                        href={`/projeto/${projeto.id}`} // Link para o detalhe do projeto
+                        href={`/projeto/${projeto.id}`}
                         className="cursor-pointer"
                       >
                         {projeto.nome}
@@ -174,28 +173,22 @@ function Projetos({ listaProjetos }) { // Define o componente Projetos
                     </h2>
                     <div className="space-x-4 text-sm text-gray-500">
                       <span>
-                        {
-                          categorias.find(
-                            (cat) => cat.id === projeto.categoria_id
-                          )?.nome
-                        }
+                        {categorias.find((cat) => cat.id === projeto.categoria_id)?.nome}
                       </span>
                       <span>
-                        {
-                          turmas.find((turma) => turma.id === projeto.turma_id)
-                            ?.nome
-                        }
+                        {turmas.find((turma) => turma.id === projeto.turma_id)?.nome}
                       </span>
                     </div>
                   </div>
                   <button
-                    onClick={() => toggleModal(projeto.id)} // Abre o modal para o projeto selecionado
-                    className="relative flex items-center justify-center w-10 h-10 text-2xl font-bold text-gray-800 transition-all duration-300 ease-in-out rounded-full hover:bg-gray-200"
+                    onClick={() => toggleModal(projeto.id)}
+                    className="flex items-center justify-center w-10 h-10 text-2xl font-bold text-gray-800 transition-all duration-300 ease-in-out rounded-full hover:bg-gray-200"
                   >
                     +
                   </button>
                 </div>
               ))}
+
 
               {/* Card para adicionar novo projeto */}
               <div className="flex items-center justify-between w-full p-4 bg-gray-100 border-2 border-gray-200 border-dashed rounded-lg shadow-md hover:shadow-lg">
@@ -218,6 +211,7 @@ function Projetos({ listaProjetos }) { // Define o componente Projetos
               </div>
             </div>
           </div>
+
         </aside>
 
         {/* Componente de filtro, se necessário */}

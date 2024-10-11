@@ -7,6 +7,7 @@ const Avaliacoes = () => {
     const { id } = useParams(); // Obtém o ID do projeto da URL
     const [votos, setVotos] = useState({ positivos: 0, neutros: 0, negativos: 0 }); // Estado para armazenar contagem de votos
     const [comentarios, setComentarios] = useState([]); // Estado para armazenar comentários
+    const [expandedCommentIndex, setExpandedCommentIndex] = useState(null); // Estado para controlar qual comentário está expandido
 
     useEffect(() => {
         // Função para buscar votos e comentários
@@ -41,6 +42,11 @@ const Avaliacoes = () => {
 
         fetchVotos(); // Chama a função para buscar dados
     }, [id]); // Dependência para executar sempre que o ID mudar
+
+    const toggleExpandComment = (index) => {
+        // Se o índice clicado for o mesmo que o estado atual, fecha o comentário, caso contrário, expande o novo
+        setExpandedCommentIndex(prevIndex => (prevIndex === index ? null : index));
+    };
 
     return (
         <div className="p-4 rounded-lg bg-green-50">
@@ -81,11 +87,29 @@ const Avaliacoes = () => {
             </div>
 
             <h1 className="pt-20 text-3xl font-bold text-black dark:text-white">Comentários</h1>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                {comentarios.map((comentario, index) => ( // Mapeia comentários para exibição
-                    <div key={index} className="p-4 rounded-md bg-green-50">{comentario}</div>
-                ))}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 w-vw">
+                {comentarios.map((comentario, index) => {
+                    const isLongComment = comentario.length > 100; // Altere o limite conforme necessário
+                    const isExpanded = expandedCommentIndex === index; // Verifica se o comentário está expandido
+
+                    return (
+                        <div key={index} className="flex flex-grow p-4 mt-4 border border-gray-300 rounded-md bg-green-50 shadow">
+                            <div className={`flex-grow max-w-full ${isExpanded ? '' : 'overflow-hidden text-ellipsis whitespace-nowrap'}`}>
+                                {comentario}
+                            </div>
+                            {isLongComment && (
+                                <button
+                                    onClick={() => toggleExpandComment(index)}
+                                    className="ml-2 text-blue-500 hover:underline focus:ring-gray-200"
+                                >
+                                    {isExpanded ? 'Mostrar menos' : 'Mostrar mais'}
+                                </button>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
+
         </div>
     );
 };
