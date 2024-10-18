@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const routes = require('./api/routes/index.js'); // Corrigir o caminho conforme necessário
+const routes = require('./routes/index.js'); // Corrigir o caminho conforme necessário
 
 const app = express();
 
