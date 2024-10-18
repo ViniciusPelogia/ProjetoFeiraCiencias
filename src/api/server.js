@@ -1,19 +1,15 @@
-const express = require('express'); // Importa o Express
-const cors = require('cors'); // Importa o middleware cors
-const routes = require('../api/routes/index.js'); // Importa as rotas da aplicação
+const express = require('express');
+const cors = require('cors');
+const routes = require('./api/routes/index.js'); // Corrigir o caminho conforme necessário
 
-const app = express(); // Cria uma instância do Express
-const port = 5000; // Define a porta do servidor
+const app = express();
 
-// Configura o middleware CORS
 app.use(cors({
-    origin: 'http://localhost:3000' // Permite apenas requisições da origem especificada
+    origin: 'https://projeto-feiraciencias-tau.vercel.app' // Atualize com o domínio Vercel do seu frontend
 }));
 
-app.use(express.json()); // Middleware para fazer o parsing de JSON no corpo das requisições
-routes(app); // Inicializa as rotas
+app.use(express.json());
+routes(app);
 
-// Inicia o servidor na porta especificada
-app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`); // Log que indica que o servidor está ativo
-});
+module.exports = app;
+
